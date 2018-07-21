@@ -1,0 +1,87 @@
+puts "Input year"
+  year = gets.chomp.to_i
+puts "Input month"
+  month = gets.chomp.downcase
+puts "Input day"
+  day = gets.chomp.to_i
+
+puts "Finding the day of the week for #{month.capitalize} #{day}, #{year}..."
+
+last_2_year = year.to_s.split(//).last(2).join.to_i
+year_code = (last_2_year / 4).floor
+
+month_hash = {
+'january' => 1,
+'february' => 4,
+'march' => 4,
+'april' => 0,
+'may' => 2,
+'june' => 5,
+'july' => 0,
+'august' => 3,
+'september' => 6,
+'october' => 1,
+'november' => 4,
+'december' => 6
+}
+
+month_code ||= nil
+month_hash.each do |hashmonth, code|
+  if month == hashmonth
+     month_code = code
+   end
+end
+
+month_modifier ||= 0
+if month == 'january' || 'february'
+  if last_2_year % 4 == 0
+    if last_2_year != 0
+      month_modifier = -1
+    end
+  end
+end
+
+def century_finder(n)
+    ( n * 0.01 ).floor * 100
+end
+
+century = century_finder(year)
+
+case
+  when century < 1700
+    century += 400 until century >= 1700
+  when century > 2000
+    century -= 400 until century <= 2000
+end
+
+century_code ||= 0
+case
+  when century == 1700
+    century_code = 4
+  when century == 1800
+    century_code = 2
+  when century == 1900
+    century_code = 0
+  when century == 2000
+    century_code = 6
+end
+
+final_code = year_code + day + month_code + month_modifier + century_code + last_2_year
+answer_code = final_code % 7
+
+
+answer_hash = {
+1 => 'Sunday',
+2 => 'Monday',
+3 => 'Tuesday',
+4 => 'Wednesday',
+5 => 'Thursday',
+6 => 'Friday',
+7 => 'Saturday'
+}
+
+answer_hash.each do |code, day|
+  if answer_code == code
+  puts day
+  end
+end
